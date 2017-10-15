@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
-  selector: 'mwl-demo-app',
-  encapsulation: ViewEncapsulation.None,
-  template: `
+    selector: 'mwl-demo-app',
+    encapsulation: ViewEncapsulation.None,
+    template: `
     
     <div class="gauges-container">
 
@@ -22,6 +22,7 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
         [max]="100"
         [dialStartAngle]="180"
         [dialEndAngle]="0"
+        [label]="percentageValue"
         [value]="gaugeValues[2]"
         [animated]="true"
         [animationDuration]="2">
@@ -30,6 +31,7 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
       <mwl-gauge
         class="three"
         [max]="100"
+        [label]="percentageValue"
         [value]="gaugeValues[3]"
         [animated]="true"
         [animationDuration]="1.5">
@@ -40,6 +42,7 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
         [max]="100"
         [dialStartAngle]="180"
         [dialEndAngle]="-90"
+        [label]="percentageValue"
         [value]="gaugeValues[4]"
         [animated]="true"
         [animationDuration]="2">
@@ -50,6 +53,7 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
         [max]="200"
         [dialStartAngle]="0"
         [dialEndAngle]="-180"
+        [label]="percentageValue"
         [value]="gaugeValues[5]"
         [animated]="true"
         [animationDuration]="1">
@@ -62,6 +66,7 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
         [dialEndAngle]="89.99"
         [radius]="150"
         [showValue]="false"
+        [label]="percentageValue"
         [value]="gaugeValues[6]"
         [animated]="true"
         [animationDuration]="1">
@@ -70,7 +75,7 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
     </div>
 
   `,
-  styles: [`
+    styles: [`
     body {
       background-color: rgba(0,0,0,0.8);
       color: #999;
@@ -186,47 +191,48 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 })
 export class DemoComponent implements OnInit, OnDestroy {
 
-  percentageValue: (value: number) => string;
+    percentageValue: (value: number) => string;
 
-  gaugeValues: any = {
-    1: 100,
-    2: 50,
-    3: 50,
-    4: 50,
-    5: 50,
-    6: 50
-  };
-
-  interval: number;
-
-  constructor() {
-    this.percentageValue = function(value: number): string {
-      return `${Math.round(value)} / ${this.max}`;
-    };
-  }
-
-  ngOnInit(): void {
-
-    const updateValues: Function = (): void => {
-      this.gaugeValues =  {
-        1: Math.round(Math.random() * 100),
-        2: Math.round(Math.random() * 100),
-        3: Math.round(Math.random() * 100),
-        4: Math.round(Math.random() * 100),
-        5: Math.round(Math.random() * 200),
-        6: Math.round(Math.random() * 100)
-      };
+    gaugeValues: any = {
+        1: 100,
+        2: 50,
+        3: 50,
+        4: 50,
+        5: 50,
+        6: 50
     };
 
-    const INTERVAL: number = 5000;
+    interval: number;
+    max: number = 100;
 
-    this.interval = setInterval(updateValues, INTERVAL);
-    updateValues();
+    constructor() {
+        this.percentageValue = (value: number): string => {
+            return `${Math.round(value)} / ${this.max}`;
+        };
+    }
 
-  }
+    ngOnInit(): void {
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval);
-  }
+        const updateValues: Function = (): void => {
+            this.gaugeValues = {
+                1: Math.round(Math.random() * 100),
+                2: Math.round(Math.random() * 100),
+                3: Math.round(Math.random() * 100),
+                4: Math.round(Math.random() * 100),
+                5: Math.round(Math.random() * 200),
+                6: Math.round(Math.random() * 100)
+            };
+        };
+
+        const INTERVAL: number = 5000;
+
+        this.interval = setInterval(updateValues, INTERVAL);
+        updateValues();
+
+    }
+
+    ngOnDestroy(): void {
+        clearInterval(this.interval);
+    }
 
 }
